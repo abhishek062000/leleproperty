@@ -57,13 +57,13 @@ public class WebSecurityConfig {
                     "/productlist",
                     "/service",
                     "/contact",
-                    "/actuator/**" // health checks if enabled
+                    "/actuator/**","/**" // health checks if enabled
                 ).permitAll()
 //                .requestMatchers("/us").hasAnyAuthority("USER", "CREATOR", "EDITOR", "ADMIN")
 //                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "CREATOR")
 //                .requestMatchers("/edit/**").hasAnyAuthority("ADMIN", "EDITOR")
 //                .requestMatchers("/delete/**").hasAuthority("ADMIN")
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")
