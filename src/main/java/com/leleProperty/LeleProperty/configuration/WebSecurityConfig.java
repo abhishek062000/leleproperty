@@ -52,9 +52,9 @@ public class WebSecurityConfig {
                         "/login",
                         "/registration",
                         "/api/register",
-                        "/property","/api/getAllProperty","/productlist","/service","/contact").permitAll() // Allow Swagger UI
+                        "/property","/api/getAllProperty","/productlist","/service","/contact","/**").permitAll() // Allow Swagger UI
                 
-                .requestMatchers("/").hasAnyAuthority("USER", "CREATOR", "EDITOR", "ADMIN")
+                .requestMatchers("/us").hasAnyAuthority("USER", "CREATOR", "EDITOR", "ADMIN")
                 .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "CREATOR")
                 .requestMatchers("/edit/**").hasAnyAuthority("ADMIN", "EDITOR")
                 .requestMatchers("/delete/**").hasAuthority("ADMIN")
