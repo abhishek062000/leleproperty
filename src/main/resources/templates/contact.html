@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .contact-container {
+            padding: 100px 20px 50px;
+            text-align: center;
+            background-image: url('image/contact.jpeg');
+            background-size: cover;
+            background-position: center;
+            min-height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-form {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-heading {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #FFD700;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group span {
+            position: absolute;
+            left: 10px;
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        .contact-input, .contact-textarea {
+            width: 100%;
+            padding: 12px 40px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .contact-textarea {
+            height: 100px;
+        }
+
+        .contact-button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .map-iframe {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0);
+        }
+    </style>
+</head>
+<body>
+ <div th:replace="fragment/navbar"></div>
+    <div class="contact-container">
+        <div class="contact-form">
+            <h2 class="contact-heading">Contact Us</h2>
+            <form id="contactForm">
+                <div class="input-group">
+                    <span><i class="fas fa-user"></i></span>
+                    <input type="text" name="name" placeholder="Enter your name" class="contact-input" required>
+                </div>
+                <div class="input-group">
+                    <span><i class="fas fa-envelope"></i></span>
+                    <input type="email" name="email" placeholder="Enter your email" class="contact-input" required>
+                </div>
+                <div class="input-group">
+                    <span><i class="fas fa-phone"></i></span>
+                    <input type="text" name="mobile" placeholder="Enter your mobile number" class="contact-input" required>
+                </div>
+                <div class="input-group">
+                    <span><i class="fas fa-comment-dots"></i></span>
+                    <textarea name="message" placeholder="Enter your message" class="contact-textarea" required></textarea>
+                </div>
+                <button type="submit" class="contact-button">Send on WhatsApp</button>
+            </form>
+            <iframe
+                title="Google Maps"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3579.6923555933254!2d78.19045057546852!3d26.206684177075033!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3976c4048cf51179%3A0xd87f64d7764f1a2f!2s45%2C%20Kailash%20Vihar%20Main%20Rd%2C%20City%20Center%2C%20Tulsi%20Vihar%20Colony%2C%20Gwalior%2C%20Madhya%20Pradesh%20474002!5e0!3m2!1sen!2sin!4v1741692141607!5m2!1sen!2sin"
+                class="map-iframe"
+                allowFullScreen=""
+                loading="lazy"
+            ></iframe>
+        </div>
+    </div>
+       <div th:replace="fragment/fotter"></div>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = this.name.value;
+            const email = this.email.value;
+            const mobile = this.mobile.value;
+            const message = this.message.value;
+
+            if (!name || !email || !mobile || !message) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const whatsappNumber = "+918358988705";
+            const whatsappMessage = `Hello! I would like to contact you.\n\nName: ${name}\nEmail: ${email}\nMobile: ${mobile}\nMessage: ${message}`;
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+            window.open(whatsappURL, "_blank");
+
+            this.reset();
+        });
+    </script>
+</body>
+</html>

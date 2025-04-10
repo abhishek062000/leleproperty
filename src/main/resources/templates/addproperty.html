@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeleProperty.com - Properties</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .search-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto 10px auto;
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Space between search elements */
+            align-items: center; /* Align items vertically in the center */
+        }
+
+        .search-bar-input {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+            max-width: 300px; /* Adjust as needed */
+            width: 100%;
+        }
+
+        .search-bar-input:focus-within {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: none;
+            outline: none;
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 0 25px 25px 0;
+        }
+
+        .search-dropdown {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .form-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            grid-column: 1 / 3;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+        }
+
+        .form-container label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .form-container label i {
+            margin-right: 8px;
+            color: white;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="number"],
+        .form-container input[type="file"],
+        .form-container select {
+            width: calc(100% - 30px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            grid-column: 1 / 3;
+            font-weight: 600;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            .form-container, .property-grid, .property-container, .search-container {
+                width: 95%;
+                padding: 15px;
+            }
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 70%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .property-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 10px auto 20px auto;
+        }
+
+        .property-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .property-item {
+            background-color: grey;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        .property-item h3 {
+            margin-top: 0;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .property-item p {
+            color: white;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .property-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="fragment/adminside"></div>
+
+    <div class="form-container">
+        <h2>Add Property</h2>
+        <form id="propertyForm" enctype="multipart/form-data">
+            <label for="propertyCategory"><i class="fas fa-tags"></i> Property Category:</label>
+            <select id="propertyCategory" name="propertyCategory" required>
+                <option value="">Select Category</option>
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Land">Land</option>
+            </select><br>
+            <label for="propertyType"><i class="fas fa-building"></i> Property Type:</label>
+            <select id="propertyType" name="propertyType" required>
+                <option value="">Select Type</option>
+                <optgroup label="Residential">
+                    <option value="House">House</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Plots">Plots</option>
+                </optgroup>
+                <optgroup label="Commercial">
+                    <option value="Office">Office</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Warehouse">Warehouse</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Land">Land</option>
+                    <option value="Other Commercial">Other</option>
+                </optgroup>
+                <optgroup label="Land">
+                    <option value="Agricultural">Agricultural</option>
+                    <option value="Residential Land">Residential</option>
+                    <option value="Commercial Land">Commercial</option>
+                    <option value="Industrial Land">Industrial</option>
+                    <option value="Other Land">Other</option>
+                </optgroup>
+            </select><br>
+            <div id="formColumn1">
+                <label for="propertyName"><i class="fas fa-home"></i> Property Name:</label>
+                <input type="text" id="propertyName" name="propertyName" required><br>
+                <label for="propertyAddress"><i class="fas fa-map-marker-alt"></i> Property Address:</label>
+                <input type="text" id="propertyAddress" name="propertyAddress" required><br>
+                <label for="propertyArea"><i class="fas fa-ruler"></i> Property Area:</label>
+                <input type="text" id="propertyArea" name="propertyArea" required><br>
+                <label for="propertyPrice"><i class="fas fa-dollar-sign"></i> Property Price:</label>
+                <input type="number" id="propertyPrice" name="propertyPrice" required><br>
+                <label for="propertyDescription"><i class="fas fa-file-alt"></i> Property Description:</label>
+                <input type="text" id="propertyDescription" name="propertyDescription" required><br>
+            </div>
+            <div id="formColumn2">
+                <label for="propertyImage1"><i class="fas fa-image"></i> Property Image 1:</label>
+                <input type="file" id="propertyImage1" name="image1" accept="image/*" required><br>
+                <label for="propertyImage2"><i class="fas fa-image"></i> Property Image 2:</label>
+                <input type="file" id="propertyImage2" name="image2" accept="image/*"><br>
+                <label for="propertyImage3"><i class="fas fa-image"></i> Property Image 3:</label>
+                <input type="file" id="propertyImage3" name="image3" accept="image/*"><br>
+                <label for="propertyImage4"><i class="fas fa-image"></i> Property Image 4:</label>
+                <input type="file" id="propertyImage4" name="image4" accept="image/*"><br>
+            </div>
+            <button type="button" onclick="saveProperty()">Add Property</button>
+        </form>
+    </div>
+
+    <div class="property-container">
+        <div class="search-container">
+            <select class="search-dropdown" id="searchCategory" onchange="searchProperties()">
+                <option value="">All Categories</option>
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Land">Land</option>
+            </select>
+            <select class="search-dropdown" id="searchType" onchange="searchProperties()">
+                <option value="">All Types</option>
+                <optgroup label="Residential">
+                    <option value="House">House</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Townhouse">Townhouse</option>
+                </optgroup>
+                <optgroup label="Commercial">
+                    <option value="Office">Office</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Warehouse">Warehouse</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Land">Land</option>
+                    <option value="Other Commercial">Other</option>
+                </optgroup>
+                <optgroup label="Land">
+                    <option value="Agricultural">Agricultural</option>
+                    <option value="Residential Land">Residential</option>
+                    <option value="Commercial Land">Commercial</option>
+                    <option value="Industrial Land">Industrial</option>
+                    <option value="Other Land">Other</option>
+                </optgroup>
+            </select>
+            <div class="search-bar-input">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search by name, address, etc..." onkeyup="searchProperties()">
+            </div>
+            <button class="search-button" onclick="searchProperties()"><i class="fas fa-search"></i></button>
+        </div>
+        <h2>All Properties</h2>
+        <div class="property-grid" id="propertyGrid">
+        </div>
+    </div>
+
+    <div id="responseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script>
+    let allProperties = [];
+
+    function populateGrid(properties) {
+        const grid = document.getElementById('propertyGrid');
+        grid.innerHTML = '';
+
+        properties.forEach(property => {
+            const item = document.createElement('div');
+            item.className = 'property-item';
+
+            item.innerHTML = `
+                <h3>${property.propertyName}</h3>
+                <img src="${property.image1 || '/img/no-image.jpg'}" alt="${property.propertyName}">
+                <p>Category: ${property.category}</p>
+                <p>Type: ${property.propertyType}</p>
+                <p>Address: ${property.propertyAddress}</p>
+                <p>Area: ${property.propertyArea}</p>
+                <p>Price: ₹${property.propertyPrice}</p>
+                <p>Description: ${property.propertyDescription}</p>
+                <a href="/editProperty/${property.propertyId}"><i class="fas fa-edit"></i> Edit</a> |
+                <a href="/deleteProperty/${property.propertyId}" onclick="return confirm('Are you sure?')"><i class="fas fa-trash-alt"></i> Delete</a>
+            `;
+            grid.appendChild(item);
+        });
+    }
+
+    function fetchAndPopulateProperties() {
+        fetch('/api/getAllProperty')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not OK');
+                return response.json();
+            })
+            .then(data => {
+                // Support either `body` or raw list
+                allProperties = Array.isArray(data) ? data : (data.body || []);
+                populateGrid(allProperties);
+            })
+            .catch(error => {
+                console.error('Error fetching properties:', error);
+                showModal("Failed to load properties. Please try again later.");
+            });
+    }
+
+    fetchAndPopulateProperties();
+
+    function searchProperties() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const searchCategory = document.getElementById('searchCategory').value;
+        const searchType = document.getElementById('searchType').value;
+
+        const filteredProperties = allProperties.filter(property => {
+            const categoryMatch = !searchCategory || property.category === searchCategory;
+            const typeMatch = !searchType || property.propertyType === searchType;
+            const textMatch = [property.propertyName, property.propertyAddress, property.propertyArea, property.propertyPrice.toString(), property.propertyDescription]
+                .some(field => field?.toLowerCase().includes(searchTerm));
+            return categoryMatch && typeMatch && textMatch;
+        });
+
+        populateGrid(filteredProperties);
+    }
+
+    function saveProperty() {
+        const form = document.getElementById('propertyForm');
+        const formData = new FormData();
+
+        // Collect form images
+        ['image1', 'image2', 'image3', 'image4'].forEach((key, index) => {
+            const input = document.getElementById(`propertyImage${index + 1}`);
+            if (input?.files?.length > 0) {
+                formData.append(key, input.files[0]);
+            }
+        });
+
+        // Collect property JSON data
+        const propertyData = {
+            category: form.propertyCategory.value,
+            propertyType: form.propertyType.value,
+            propertyName: form.propertyName.value,
+            propertyAddress: form.propertyAddress.value,
+            propertyArea: form.propertyArea.value,
+            propertyPrice: form.propertyPrice.value,
+            propertyDescription: form.propertyDescription.value
+        };
+
+        formData.append('property', new Blob([JSON.stringify(propertyData)], { type: 'application/json' }));
+
+        fetch('/api/saveProperty', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            showModal(data.message || "Property saved.");
+            form.reset();
+            fetchAndPopulateProperties();
+        })
+        .catch(err => {
+            console.error("Save error:", err);
+            showModal("Failed to save property.");
+        });
+    }
+
+
+        function closeModal() {
+            document.getElementById('responseModal').style.display = 'none';
+        }
+    </script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

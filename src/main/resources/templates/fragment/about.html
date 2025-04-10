@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            overflow-x: hidden;
+            background-image: url('image/about.jpeg'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Optional: Keeps background fixed during scroll */
+            color: white; /* Adjust text color for visibility */
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for content */
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background for content */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .heading {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .text {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .expertise-container {
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for expertise section */
+            padding: 30px 20px;
+        }
+
+        .expertise-heading {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .expertise-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .expertise-item {
+            text-align: center;
+        }
+
+        .expertise-icon {
+            font-size: 30px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .expertise-text {
+            font-size: 16px;
+        }
+        .play-pause-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .play-pause-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1 class="heading">
+                <i class="fas fa-signature" style="margin-right: 10px;"></i>
+                About Property Lelo
+            </h1>
+            <p class="text">
+                <i class="fas fa-home" style="margin-right: 8px;"></i>
+                Welcome to <span class="highlight">LeleProperty.com</span>, where dreams become reality.
+            </p>
+            <p class="text">
+                <i class="fas fa-key" style="margin-right: 8px;"></i>
+                We connect buyers and sellers, ensuring optimal value.
+            </p>
+            <p class="text">
+                <i class="fas fa-users" style="margin-right: 8px;"></i>
+                Our team provides personalized, transparent service.
+            </p>
+            <p class="text">
+                We pride ourselves on our deep local market knowledge.
+            </p>
+            <p class="text">
+                Let us guide you to your perfect property solution.
+            </p>
+        </div>
+    </div>
+    <div class="play-pause-container">
+        <button class="play-pause-button" id="playPauseButton">
+            <i class="fas fa-play" id="playPauseIcon"></i>
+        </button>
+    </div>
+    <div class="expertise-container">
+        <h2 class="expertise-heading">Our Expertise</h2>
+        <div class="expertise-list">
+            <div class="expertise-item">
+                <i class="fas fa-chart-line expertise-icon"></i>
+                <p class="expertise-text">Market Analysis</p>
+            </div>
+            <div class="expertise-item">
+                <i class="fas fa-building expertise-icon"></i>
+                <p class="expertise-text">Property Valuation</p>
+            </div>
+            <div class="expertise-item">
+                <i class="fas fa-handshake expertise-icon"></i>
+                <p class="expertise-text">Negotiation Skills</p>
+            </div>
+            <div class="expertise-item">
+                <i class="fas fa-search expertise-icon"></i>
+                <p class="expertise-text">Property Search</p>
+            </div>
+            <div class="expertise-item">
+                <i class="fas fa-file-contract expertise-icon"></i>
+                <p class="expertise-text">Contract Management</p>
+            </div>
+        </div>
+    </div>
+    <audio id="myAudio" src="music/me.mp3" loop style="display: none;"></audio>
+    <script>
+        const audio = document.getElementById('myAudio');
+        const playPauseButton = document.getElementById('playPauseButton');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+        let isPlaying = false;
+
+        playPauseButton.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playPauseIcon.classList.remove('fa-pause');
+                playPauseIcon.classList.add('fa-play');
+            } else {
+                audio.play();
+                playPauseIcon.classList.remove('fa-play');
+                playPauseIcon.classList.add('fa-pause');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            playPauseIcon.classList.remove('fa-pause');
+            playPauseIcon.classList.add('fa-play');
+        });
+    </script>
+</body>
+</html>

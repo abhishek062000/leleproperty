@@ -1,0 +1,59 @@
+// HTML Frontend (index.html)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration and Login</title>
+    <script>
+        async function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const email = document.getElementById('registerEmail').value;
+            const roles = document.getElementById('registerRoles').value.split(',');
+
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password, email, roles })
+            });
+            if (response.ok) {
+                alert('Registration successful!');
+            } else {
+                alert('Registration failed!');
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + btoa(username + ':' + password)
+                }
+            });
+            if (response.ok) {
+                alert('Login successful!');
+            } else {
+                alert('Login failed!');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Registration</h2>
+    <input type="text" id="registerUsername" placeholder="Username"><br>
+    <input type="password" id="registerPassword" placeholder="Password"><br>
+    <input type="email" id="registerEmail" placeholder="Email"><br>
+    <input type="text" id="registerRoles" placeholder="Roles (comma separated)"><br>
+    <button onclick="register()">Register</button>
+
+    <h2>Login</h2>
+    <input type="text" id="loginUsername" placeholder="Username"><br>
+    <input type="password" id="loginPassword" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+</body>
+</html>
