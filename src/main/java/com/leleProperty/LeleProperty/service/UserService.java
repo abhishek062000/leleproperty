@@ -39,13 +39,13 @@ public class UserService {
         user.setEnabled(true);
 
         Set<Role> roles = new HashSet<>();
-        Role defaultRole = roleRepository.findByName("ADMIN"); // Fetch Role by name from database
+        Role defaultRole = roleRepository.findByName("USER"); // Fetch Role by name from database
 
         if (defaultRole == null) {
             // Handle case where "USER" role doesn't exist.
             // You might want to create the role here, or return an error.
             defaultRole = new Role();
-            defaultRole.setName("ADMIN");
+            defaultRole.setName("USER");
             roleRepository.save(defaultRole); //create a new role.
         }
 
