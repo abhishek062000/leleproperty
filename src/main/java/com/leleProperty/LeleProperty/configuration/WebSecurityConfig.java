@@ -72,22 +72,5 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    // CORS configuration for Railway and frontend apps hosted elsewhere
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins(
-                            "http://localhost:3000",     // For local dev
-                            "https://your-frontend.vercel.app", // Replace with actual frontend URL
-                            "https://your-backend.railway.app"  // Optional: allow access from Railway domain
-                        )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
-    }
+    
 }
