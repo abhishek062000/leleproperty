@@ -59,10 +59,10 @@ public class WebSecurityConfig {
                     "/contact",
                     "/actuator/**" // health checks if enabled
                 ).permitAll()
-                .requestMatchers("/us").hasAnyAuthority("USER", "CREATOR", "EDITOR", "ADMIN")
-                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "CREATOR")
-                .requestMatchers("/edit/**").hasAnyAuthority("ADMIN", "EDITOR")
-                .requestMatchers("/delete/**").hasAuthority("ADMIN")
+//                .requestMatchers("/us").hasAnyAuthority("USER", "CREATOR", "EDITOR", "ADMIN")
+//                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "CREATOR")
+//                .requestMatchers("/edit/**").hasAnyAuthority("ADMIN", "EDITOR")
+//                .requestMatchers("/delete/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
