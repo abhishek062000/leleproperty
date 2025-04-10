@@ -22,7 +22,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         String redirectUrl = "/"; // Default URL
 
-        for (GrantedAuthority authority : authorities) {
+        for  (GrantedAuthority authority : authorities) {
             String role = authority.getAuthority();
             if (role.equals("ADMIN")) {
                 redirectUrl = "/ad"; // Redirect for ADMIN
