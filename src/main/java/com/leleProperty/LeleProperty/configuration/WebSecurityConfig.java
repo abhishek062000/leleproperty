@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.leleProperty.LeleProperty.service.UserDetailsServiceImpl;
 
-
 @Configuration
 public class WebSecurityConfig {
 
@@ -26,12 +25,12 @@ public class WebSecurityConfig {
     UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
-     
+
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-     
+
     @Bean
     DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -42,8 +41,10 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
-                .requestMatchers("/swagger-ui/**",
+        http.csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/",
                         "/css/**",
@@ -52,23 +53,41 @@ public class WebSecurityConfig {
                         "/login",
                         "/registration",
                         "/api/register",
-                        "/property","/api/getAllProperty","/productlist","/service","/contact","/**").permitAll() // Allow Swagger UI
-                
-//                .requestMatchers("/user").hasAnyAuthority("USER", "CREATOR", "EDITOR", "ADMIN")
-//                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "CREATOR")
-//                .requestMatchers("/edit/**").hasAnyAuthority("ADMIN", "EDITOR")
-//                .requestMatchers("/delete/**").hasAuthority("ADMIN")
-//                
-//                .anyRequest().authenticated()
-        )
-                .formLogin(form -> form
-                        .loginPage("/login") // Custom login page
-                        .successHandler(successHandler) // Use custom success handler
-                        .permitAll()
-                )
-                .logout(logout -> logout.permitAll())
-                .exceptionHandling(eh -> eh.accessDeniedPage("/403"));
+                        "/property",
+                        "/api/getAllProperty",
+                        "/productlist",
+                        "/service",
+                        "/contact",
+                        "/**"
+                ).permitAll()
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .successHandler(successHandler)
+                .permitAll()
+            )
+            .logout(logout -> logout.permitAll())
+            .exceptionHandling(eh -> eh.accessDeniedPage("/403"));
 
         return http.build();
+    }
+
+    // CORS configuration for Railway and frontend apps hosted elsewhere
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins(
+                            "http://localhost:3000",     // For local dev
+                            "https://your-frontend.vercel.app", // Replace with actual frontend URL
+                            "https://your-backend.railway.app"  // Optional: allow access from Railway domain
+                        )
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }
